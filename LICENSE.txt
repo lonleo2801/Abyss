@@ -1,0 +1,19 @@
+Abyss - Closed Source License Agreement
+Copyright (c) 2025 Leon Lee 
+
+All Rights Reserved.
+
+This software and all associated assets (the "Software") are the exclusive property of Leon Lee and are protected by international copyright laws and treaties.
+
+You are not permitted to:
+- Use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, in part or in whole;
+- Decompile, reverse engineer, or disassemble the Software;
+- Redistribute the Software in any form without explicit, written permission from the copyright holder;
+- Create derivative works based on the Software without written authorization;
+
+This Software is licensed for use solely by authorized team members of Leon Game or individuals granted explicit permission by the copyright holder.
+
+Any unauthorized use, duplication, or distribution is strictly prohibited and may result in legal consequences.
+
+For licensing inquiries or partnership opportunities, please contact:
+lonleo2801@gmail.com
