@@ -64,7 +64,7 @@ protected:
 	virtual void OnRep_PlayerState() override;
 
 	/** Input mapping context setup */
-	virtual void SetupInputComponent() override;
+	//virtual void SetupInputComponent() override;
 
 private:
 	void AbilityInputTagPressed(FGameplayTag InputTag);

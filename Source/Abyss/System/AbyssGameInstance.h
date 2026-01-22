@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonGameInstance.h"
+#include "AdvancedFriendsGameInstance.h"
 #include "AbyssGameInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ABYSS_API UAbyssGameInstance : public UCommonGameInstance
+class ABYSS_API UAbyssGameInstance :  public UAdvancedFriendsGameInstance
 {
 	GENERATED_BODY()
 

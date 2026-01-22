@@ -51,11 +51,11 @@ void AAbyssPlayerController::OnPossess(APawn* InPawn)
 	PushHudToRootLayer();
 	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
 
-	// 初始化ViewModel
+	/*// 初始化ViewModel
 	InitCharacterAttributesViewModel();
 	
 	// 绑定属性修改
-	BindAttributesChangeDelegateToViewModel();
+	BindAttributesChangeDelegateToViewModel();*/
 }
 
 
@@ -69,7 +69,7 @@ void AAbyssPlayerController::OnRep_PlayerState()
 	// 将前端界面推送到主界面!
 	PushHudToRootLayer();
 	
-	// 初始化ViewModel
+	/*// 初始化ViewModel
 	InitCharacterAttributesViewModel();
 	
 	if (GetASC())
@@ -104,10 +104,11 @@ void AAbyssPlayerController::OnRep_PlayerState()
 			1.f,
 			false
 		);
-	}
+	}*/
 }
 
-void AAbyssPlayerController::SetupInputComponent()
+//TODO: 为了兼容mover暂时禁用
+/*void AAbyssPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
@@ -128,7 +129,7 @@ void AAbyssPlayerController::SetupInputComponent()
 	AbyssEnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	//ability
 	AbyssEnhancedInputComponent->BindAbilityActions(this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
-}
+}*/
 
 void AAbyssPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {

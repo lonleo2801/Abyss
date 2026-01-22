@@ -63,7 +63,8 @@ public class Abyss : ModuleRules
 			"CommonGame",
 				
 			// 用户账户与权限系统。
-			"CommonUser",
+			//"CommonUser", 
+			"AdvancedSessions",
 				
 			// 字幕
 			//"GameSubtitles",

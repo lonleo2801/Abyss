@@ -28,7 +28,7 @@
 		},
 		{
 			"Name": "CommonUser",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "OnlineFramework",

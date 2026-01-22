@@ -1,19 +1,21 @@
-Abyss - Closed Source License Agreement
-Copyright (c) 2025 Leon Lee 
+MIT License
 
-All Rights Reserved.
+Copyright (c) 2026 lonleo2801
 
-This software and all associated assets (the "Software") are the exclusive property of Leon Lee and are protected by international copyright laws and treaties.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-You are not permitted to:
-- Use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, in part or in whole;
-- Decompile, reverse engineer, or disassemble the Software;
-- Redistribute the Software in any form without explicit, written permission from the copyright holder;
-- Create derivative works based on the Software without written authorization;
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-This Software is licensed for use solely by authorized team members of Leon Game or individuals granted explicit permission by the copyright holder.
-
-Any unauthorized use, duplication, or distribution is strictly prohibited and may result in legal consequences.
-
-For licensing inquiries or partnership opportunities, please contact:
-lonleo2801@gmail.com
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

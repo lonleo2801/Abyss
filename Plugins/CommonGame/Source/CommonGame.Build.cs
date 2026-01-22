@@ -20,7 +20,7 @@ public class CommonGame : ModuleRules
 				"UMG",
 				"CommonInput",
 				"CommonUI",
-				"CommonUser",
+				//"CommonUser",
 				"GameplayTags",
 			}
 		);

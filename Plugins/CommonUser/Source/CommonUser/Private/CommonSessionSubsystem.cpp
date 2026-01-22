@@ -315,14 +315,14 @@ int32 UCommonSession_HostSessionRequest::GetMaxPlayers() const
 
 void UCommonSessionSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	Super::Initialize(Collection);
+	/*Super::Initialize(Collection);
 	BindOnlineDelegates();
 	GEngine->OnTravelFailure().AddUObject(this, &UCommonSessionSubsystem::TravelLocalSessionFailure);
 
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UCommonSessionSubsystem::HandlePostLoadMap);
 
 	UGameInstance* GameInstance = GetGameInstance();
-	bIsDedicatedServer = GameInstance->IsDedicatedServerInstance();
+	bIsDedicatedServer = GameInstance->IsDedicatedServerInstance();*/
 }
 
 void UCommonSessionSubsystem::BindOnlineDelegates()

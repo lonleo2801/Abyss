@@ -8,6 +8,7 @@
 
 #define UE_API COMMONGAME_API
 
+/*
 enum class ECommonUserAvailability : uint8;
 enum class ECommonUserPrivilege : uint8;
 
@@ -29,8 +30,8 @@ class UCommonGameInstance : public UGameInstance
 public:
 	UE_API UCommonGameInstance(const FObjectInitializer& ObjectInitializer);
 	
-	/** Handles errors/warnings from CommonUser, can be overridden per game */
-	/** 处理来自“CommonUser”模块的错误/警告信息，可根据游戏需求进行重写 */
+	/** Handles errors/warnings from CommonUser, can be overridden per game #1#
+	/** 处理来自“CommonUser”模块的错误/警告信息，可根据游戏需求进行重写 #1#
 	UFUNCTION()
 	UE_API virtual void HandleSystemMessage(FGameplayTag MessageType, FText Title, FText Message);
 
@@ -40,8 +41,8 @@ public:
 	UFUNCTION()
 	UE_API virtual void HandlerUserInitialized(const UCommonUserInfo* UserInfo, bool bSuccess, FText Error, ECommonUserPrivilege RequestedPrivilege, ECommonUserOnlineContext OnlineContext);
 
-	/** Call to reset user and session state, usually because a player has been disconnected */
-	/** 调用此函数以重置用户和会话状态，通常是因为玩家已断开连接 */
+	/** Call to reset user and session state, usually because a player has been disconnected #1#
+	/** 调用此函数以重置用户和会话状态，通常是因为玩家已断开连接 #1#
 	UE_API virtual void ResetUserAndSessionState();
 
 	/**
@@ -58,36 +59,36 @@ public:
 	 *   如果不能，缓存所请求的会话，并指示游戏进入一个可以加入该会话的状态（ResetGameAndJoinRequestedSession）
 	 *
 	 *   
-	 */
-	/** Handles user accepting a session invite from an external source (for example, a platform overlay). Intended to be overridden per game. */
-	/** 处理用户接受来自外部来源（例如，平台覆盖层）的会话邀请。旨在根据不同游戏进行重写。*/
+	 #1#
+	/** Handles user accepting a session invite from an external source (for example, a platform overlay). Intended to be overridden per game. #1#
+	/** 处理用户接受来自外部来源（例如，平台覆盖层）的会话邀请。旨在根据不同游戏进行重写。#1#
 	UE_API virtual void OnUserRequestedSession(const FPlatformUserId& PlatformUserId, UCommonSession_SearchResult* InRequestedSession, const FOnlineResultInformation& RequestedSessionResult);
 
-	/** Handles OSS request that the session be destroyed */
-	/** 处理有关销毁会话的 OSS 请求 */
+	/** Handles OSS request that the session be destroyed #1#
+	/** 处理有关销毁会话的 OSS 请求 #1#
 	UE_API virtual void OnDestroySessionRequested(const FPlatformUserId& PlatformUserId, const FName& SessionName);
 
-	/** Get the requested session */
-	/** 获取所请求的会话 */
+	/** Get the requested session #1#
+	/** 获取所请求的会话 #1#
 	UCommonSession_SearchResult* GetRequestedSession() const { return RequestedSession; }
 	
-	/** Set (or clear) the requested session. When this is set, the requested session flow begins. */
-	/** 设置（或清除）所请求的会话。当此设置完成时，所请求的会话流程便开始启动。*/
+	/** Set (or clear) the requested session. When this is set, the requested session flow begins. #1#
+	/** 设置（或清除）所请求的会话。当此设置完成时，所请求的会话流程便开始启动。#1#
 	UE_API virtual void SetRequestedSession(UCommonSession_SearchResult* InRequestedSession);
 
 	
-	/** Checks if the requested session can be joined. Can be overridden per game. */
-	/** 检查所请求的会话是否可以加入。此功能可针对每个游戏进行自定义设置。*/
+	/** Checks if the requested session can be joined. Can be overridden per game. #1#
+	/** 检查所请求的会话是否可以加入。此功能可针对每个游戏进行自定义设置。#1#
 	UE_API virtual bool CanJoinRequestedSession() const;
 
 	
-	/** Join the requested session */
-	/** 加入所请求的会话 */
+	/** Join the requested session #1#
+	/** 加入所请求的会话 #1#
 	UE_API virtual void JoinRequestedSession();
 
 	
-	/** Get the game into a state to join the requested session */
-	/** 获取游戏状态，使其能够加入所请求的会话 */
+	/** Get the game into a state to join the requested session #1#
+	/** 获取游戏状态，使其能够加入所请求的会话 #1#
 	UE_API virtual void ResetGameAndJoinRequestedSession();
 
 	// 重写父类方法 转发给游戏UI子系统创建根布局UI
@@ -99,13 +100,14 @@ public:
 	UE_API virtual void ReturnToMainMenu() override;
 
 private:
-	/** This is the primary player*/
-	/** 这是主要的玩家 */
+	/** This is the primary player#1#
+	/** 这是主要的玩家 #1#
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
-	/** Session the player has requested to join */
-	/** 玩家请求加入的会话 */
+	/** Session the player has requested to join #1#
+	/** 玩家请求加入的会话 #1#
 	UPROPERTY()
 	TObjectPtr<UCommonSession_SearchResult> RequestedSession;
 };
+*/
 
 #undef UE_API

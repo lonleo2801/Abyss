@@ -69,7 +69,7 @@
 		},
 		{
 			"Name": "CommonUser",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "CommonGame",
@@ -118,6 +118,18 @@
 		},
 		{
 			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
+		},
+		{
+			"Name": "AnimationLocomotionLibrary",
+			"Enabled": true
+		},
+		{
+			"Name": "Mover",
+			"Enabled": true
+		},
+		{
+			"Name": "SteamSockets",
 			"Enabled": true
 		}
 	]
