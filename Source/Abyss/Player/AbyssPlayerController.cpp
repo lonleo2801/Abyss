@@ -45,7 +45,7 @@ void AAbyssPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
-	InitCommonUIRootLayer();
+	//InitCommonUIRootLayer();
 	
 	// 将前端界面推送到主界面!
 	PushHudToRootLayer();
@@ -64,7 +64,7 @@ void AAbyssPlayerController::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 	
 	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
-	InitCommonUIRootLayer();
+	//InitCommonUIRootLayer();
 	
 	// 将前端界面推送到主界面!
 	PushHudToRootLayer();

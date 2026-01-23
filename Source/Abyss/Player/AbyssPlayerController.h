@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CommonPlayerController.h"
 #include "GameFramework/PlayerController.h"
 #include "AbyssPlayerController.generated.h"
 
@@ -25,7 +26,7 @@ class UUserWidget;
  *  Manages input mappings
  */
 UCLASS(abstract)
-class AAbyssPlayerController : public APlayerController
+class AAbyssPlayerController : public ACommonPlayerController
 {
 	GENERATED_BODY()
 public:
