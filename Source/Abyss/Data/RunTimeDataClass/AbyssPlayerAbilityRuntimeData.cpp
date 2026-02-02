@@ -7,7 +7,6 @@
 #include "AbilitySystem/AbyssAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/AbyssAttributeSet.h"
 #include "AbilitySystem/BlueprintLibrary/AbyssEffectLibrary.h"
-#include "Characters/Hero/Character/AbyssHeroBase.h"
 #include "Data/AbyssDataRegistryManager.h"
 #include "Data/RegistryTypeDefine.h"
 #include "Data/DataTables/AbyssHeroClassInfoRow.h"
@@ -15,7 +14,7 @@
 
 
 
-void UAbyssPlayerAbilityRuntimeData::Initialize(const AAbyssHeroBase* HeroCharacter,FGameplayTag CharacterTypeTag)
+void UAbyssPlayerAbilityRuntimeData::Initialize(const AAbyssPawn* HeroCharacter,FGameplayTag CharacterTypeTag)
 {
 	Reset();
 	AbilitySystemComponent = HeroCharacter->GetAbilitySystemComponent();

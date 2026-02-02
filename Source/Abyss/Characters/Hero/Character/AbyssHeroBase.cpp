@@ -239,7 +239,7 @@ void AAbyssHeroBase::InitAbilityActorInfo()
 	{
 		//初始化属性
 		InitializeDefaultAttributes();
-		AbyssPlayerState->InitRuntimeData(this,CharacterTypeTag);
+		//AbyssPlayerState->InitRuntimeData(this,CharacterTypeTag);
 	}
 }
 

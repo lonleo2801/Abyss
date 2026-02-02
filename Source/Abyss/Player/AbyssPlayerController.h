@@ -65,7 +65,7 @@ protected:
 	virtual void OnRep_PlayerState() override;
 
 	/** Input mapping context setup */
-	//virtual void SetupInputComponent() override;
+	virtual void SetupInputComponent() override;
 
 private:
 	void AbilityInputTagPressed(FGameplayTag InputTag);
@@ -73,34 +73,11 @@ private:
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Movement")
-	TArray<TObjectPtr<UInputMappingContext>> InputMappingContexts;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Movement")
-	TObjectPtr<UInputAction> JumpAction;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Movement")
-	TObjectPtr<UInputAction> MoveAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Movement")
-	TObjectPtr<UInputAction> LookAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Abilities")
-	TObjectPtr<UInputAction> PrimaryAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Abilities")
-	TObjectPtr<UInputAction> SecondaryAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input|Abilities")
-	TObjectPtr<UInputAction> TertiaryAction;
+	TArray<TObjectPtr<UInputMappingContext>> AbilityIMC;
 
 private:
 	UPROPERTY()
 	TWeakObjectPtr<UAbyssAbilitySystemComponent> AbyssAbilitySystemComponent;
-	
-	void Jump();
-	void StopJumping();
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
 	
 	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 };

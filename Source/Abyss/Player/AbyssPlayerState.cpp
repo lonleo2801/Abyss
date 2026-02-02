@@ -22,7 +22,7 @@ UAbilitySystemComponent* AAbyssPlayerState::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-void AAbyssPlayerState::InitRuntimeData(AAbyssHeroBase* Hero,FGameplayTag CharacterTypeTag)
+void AAbyssPlayerState::InitRuntimeData(AAbyssPawn* Hero,FGameplayTag CharacterTypeTag)
 {
 	RuntimePlayerAbilityData = NewObject<UAbyssPlayerAbilityRuntimeData>(this);
 	RuntimePlayerAbilityData->Initialize(Hero,CharacterTypeTag);

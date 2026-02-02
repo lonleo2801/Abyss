@@ -3,10 +3,9 @@
 
 #include "AbyssCombatComponent_Hero.h"
 
+#include "Characters/AbyssPawn.h"
 #include "Characters/Hero/Character/AbyssHeroBase.h"
-#include "Data/RunTimeDataClass/AbyssPlayerAbilityRuntimeData.h"
 #include "Net/UnrealNetwork.h"
-#include "Player/AbyssPlayerState.h"
 #include "Weapons/WeaponInstance.h"
 
 
@@ -29,12 +28,12 @@ void UAbyssCombatComponent_Hero::EquipWeapon(const FDataRegistryId& InWeaponId)
 
 UAbilitySystemComponent* UAbyssCombatComponent_Hero::GetOwningAbilitySystemComponent() const
 {
-	return GetOwningPawn<AAbyssHeroBase>()->GetAbilitySystemComponent();
+	return GetOwningPawn<AAbyssPawn>()->GetAbilitySystemComponent();
 }
 
 UAttributeSet* UAbyssCombatComponent_Hero::GetOwningAttributeSet() const
 {
-	return GetOwningPawn<AAbyssHeroBase>()->GetAttributeSet();
+	return GetOwningPawn<AAbyssPawn>()->GetAttributeSet();
 }
 
 

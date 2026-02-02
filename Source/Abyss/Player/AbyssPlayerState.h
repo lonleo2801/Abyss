@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerState.h"
 #include "AbyssPlayerState.generated.h"
 
+class AAbyssPawn;
 class UAbyssAttributeSet;
 /**
  * 
@@ -25,7 +26,7 @@ public:
 	
 	UAbyssPlayerAbilityRuntimeData* GetRuntimePlayerAbilityData() const {return RuntimePlayerAbilityData;}
 	
-	void InitRuntimeData(AAbyssHeroBase* Hero,FGameplayTag CharacterTypeTag); 
+	void InitRuntimeData(AAbyssPawn* Hero,FGameplayTag CharacterTypeTag); 
 	
 protected:
 	virtual void BeginPlay() override;

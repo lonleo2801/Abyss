@@ -44,18 +44,16 @@ void AAbyssPlayerController::BeginPlay()
 void AAbyssPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
-	//InitCommonUIRootLayer();
 	
 	// 将前端界面推送到主界面!
 	PushHudToRootLayer();
 	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
 
-	/*// 初始化ViewModel
+	// 初始化ViewModel
 	InitCharacterAttributesViewModel();
 	
 	// 绑定属性修改
-	BindAttributesChangeDelegateToViewModel();*/
+	BindAttributesChangeDelegateToViewModel();
 }
 
 
@@ -63,13 +61,10 @@ void AAbyssPlayerController::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 	
-	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
-	//InitCommonUIRootLayer();
-	
 	// 将前端界面推送到主界面!
 	PushHudToRootLayer();
 	
-	/*// 初始化ViewModel
+	// 初始化ViewModel
 	InitCharacterAttributesViewModel();
 	
 	if (GetASC())
@@ -104,32 +99,29 @@ void AAbyssPlayerController::OnRep_PlayerState()
 			1.f,
 			false
 		);
-	}*/
+	}
 }
 
-//TODO: 为了兼容mover暂时禁用
-/*void AAbyssPlayerController::SetupInputComponent()
+
+void AAbyssPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
 	UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	if (!IsValid(InputSubsystem)) return;
 
-	for (UInputMappingContext* Context : InputMappingContexts)
+	for (UInputMappingContext* Context : AbilityIMC)
 	{
 		InputSubsystem->AddMappingContext(Context, 0);
 	}
 
 	UAbyssInputComponent* AbyssEnhancedInputComponent = Cast<UAbyssInputComponent>(InputComponent);
 	if (!IsValid(AbyssEnhancedInputComponent)) return;
-
-	AbyssEnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
-	AbyssEnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ThisClass::StopJumping);
-	AbyssEnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-	AbyssEnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	
+	//AbyssEnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	//ability
 	AbyssEnhancedInputComponent->BindAbilityActions(this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
-}*/
+}
 
 void AAbyssPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
@@ -245,54 +237,6 @@ void AAbyssPlayerController::BindAttributesChangeDelegateToViewModel()
 	BIND_ATTRIBUTE_TO_VIEWMODEL_DELEGATE(AbyssAttributeSet, SkillPoints);
 	BIND_ATTRIBUTE_TO_VIEWMODEL_DELEGATE(AbyssAttributeSet, SkillSlotAmount);
 }
-
-
-void AAbyssPlayerController::Jump()
-{
-	if (GetASC() && GetASC()->HasMatchingGameplayTag(AbyssTags::Block::Input::Jump))
-	{
-		return;
-	}
-	
-	if (!IsValid(GetCharacter())) return;
-
-	GetCharacter()->Jump();
-}
-
-void AAbyssPlayerController::StopJumping()
-{
-	if (!IsValid(GetCharacter())) return;
-
-	GetCharacter()->StopJumping();
-}
-
-void AAbyssPlayerController::Move(const FInputActionValue& Value)
-{
-	if (GetASC() && GetASC()->HasMatchingGameplayTag(AbyssTags::Block::Input::Move))
-	{
-		return;
-	}
-	if (!IsValid(GetPawn())) return;
-
-	const FVector2D MovementVector = Value.Get<FVector2D>();
-
-	// Find which way is forward
-	const FRotator YawRotation(0.f, GetControlRotation().Yaw, 0.f);
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-	GetPawn()->AddMovementInput(ForwardDirection, MovementVector.Y);
-	GetPawn()->AddMovementInput(RightDirection, MovementVector.X);
-}
-
-void AAbyssPlayerController::Look(const FInputActionValue& Value)
-{
-	const FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	AddYawInput(LookAxisVector.X);
-	AddPitchInput(LookAxisVector.Y);
-}
-
 
 
 void AAbyssPlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
