@@ -36,6 +36,4 @@ public:
 	virtual FOnASCRegistered GetOnAscRegisteredDelegate()const =0;
 	virtual FOnDeathSignature GetOnDeathDelegate()const =0;
 	virtual FGameplayTag GetCharacterClass() const =0;
-	virtual void LevelUp(int32 NewLevel) =0;
-	
 };

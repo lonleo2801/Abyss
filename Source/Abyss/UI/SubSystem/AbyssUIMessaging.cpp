@@ -28,7 +28,7 @@ void UAbyssUIMessaging::ShowConfirmation(UCommonGameDialogDescriptor* DialogDesc
 
 		if (UPrimaryGameLayout* RootLayout = LocalPlayer->GetRootUILayout())
 		{
-			RootLayout->PushWidgetToLayerStack<UCommonGameDialog>(AbyssTags_UI::WidgetStack::Modal,
+			RootLayout->PushWidgetToLayerStack<UCommonGameDialog>(AbyssTags_UI::Layer::Modal,
 				ConfirmationDialogClassPtr, [DialogDescriptor, ResultCallback](UCommonGameDialog& Dialog) {
 					
 				Dialog.SetupDialog(DialogDescriptor, ResultCallback);
@@ -45,7 +45,7 @@ void UAbyssUIMessaging::ShowError(UCommonGameDialogDescriptor* DialogDescriptor,
 	{
 		if (UPrimaryGameLayout* RootLayout = LocalPlayer->GetRootUILayout())
 		{
-			RootLayout->PushWidgetToLayerStack<UCommonGameDialog>(AbyssTags_UI::WidgetStack::Modal,
+			RootLayout->PushWidgetToLayerStack<UCommonGameDialog>(AbyssTags_UI::Layer::Modal,
 				ErrorDialogClassPtr, [DialogDescriptor, ResultCallback](UCommonGameDialog& Dialog) {
 				Dialog.SetupDialog(DialogDescriptor, ResultCallback);
 			});

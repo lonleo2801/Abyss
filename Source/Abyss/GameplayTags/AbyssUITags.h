@@ -7,7 +7,7 @@
 
 namespace AbyssTags_UI
 {
-	namespace WidgetStack
+	namespace Layer
 	{
 		//最下面的能Disable最上面的
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(MainMenu); //（主菜单阶段）

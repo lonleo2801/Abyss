@@ -46,8 +46,7 @@ void AAbyssPlayerController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	
 	// 将前端界面推送到主界面!
-	PushHudToRootLayer();
-	//保证在 PlayerController 确认存在且已绑定到 LocalPlayer 后再创建root布局。
+	UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(GetLocalPlayer(), AbyssTags_UI::Layer::HUD, HUDClass);
 
 	// 初始化ViewModel
 	InitCharacterAttributesViewModel();
@@ -62,7 +61,7 @@ void AAbyssPlayerController::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 	
 	// 将前端界面推送到主界面!
-	PushHudToRootLayer();
+	UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(GetLocalPlayer(), AbyssTags_UI::Layer::HUD, HUDClass);
 	
 	// 初始化ViewModel
 	InitCharacterAttributesViewModel();
@@ -172,38 +171,6 @@ void AAbyssPlayerController::ShowDamageNumber_Implementation(float DamageAmount,
 	}
 }
 
-
-void AAbyssPlayerController::InitCommonUIRootLayer() const
-{
-	if (UAbyssUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UAbyssUIManagerSubsystem>())
-	{
-		if (UCommonLocalPlayer* CommonLP = Cast<UCommonLocalPlayer>(Player))
-		{
-			UIManager->NotifyPlayerAdded(CommonLP);
-		}
-	}
-}
-
-void AAbyssPlayerController::PushHudToRootLayer() const
-{
-	if (UPrimaryGameLayout* RootLayout = UPrimaryGameLayout::GetPrimaryGameLayoutForPrimaryPlayer(this))
-	{
-		constexpr bool bSuspendInputUntilComplete = true;
-		RootLayout->PushWidgetToLayerStackAsync<UCommonActivatableWidget>(AbyssTags_UI::WidgetStack::MainMenu, bSuspendInputUntilComplete, HUDClass,
-			[this](EAsyncWidgetLayerState State, UCommonActivatableWidget* Screen) {
-			switch (State)
-			{
-			case EAsyncWidgetLayerState::AfterPush:
-				//是否需要加载屏幕bShouldShowLoadingScreen = false;
-				
-				return;
-			case EAsyncWidgetLayerState::Canceled:
-				//bShouldShowLoadingScreen = false;
-				return;
-			}
-		});
-	}
-}
 
 void AAbyssPlayerController::InitCharacterAttributesViewModel()
 {

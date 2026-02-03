@@ -36,8 +36,6 @@ public:
 	/** UI相关 */
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(float DamageAmount,ACharacter* TargetCharacter,bool bBlockHit,bool bCritHit);
-	void InitCommonUIRootLayer() const;
-	void PushHudToRootLayer() const;
 	void InitCharacterAttributesViewModel();
 	void BindAttributesChangeDelegateToViewModel();
 

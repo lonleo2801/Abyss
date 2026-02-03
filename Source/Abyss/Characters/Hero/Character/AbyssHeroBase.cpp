@@ -139,11 +139,7 @@ UAbyssCombatComponentBase* AAbyssHeroBase::GetCombatComponent() const
 	return HeroCombatComponent;
 }
 
-void AAbyssHeroBase::LevelUp(int32 NewLevel)
-{
-	//TODO: 升级特效
-	AbyssDebug::Print(FString::Printf(TEXT("Level Up: %d"), NewLevel));
-}
+
 
 
 void AAbyssHeroBase::PossessedBy(AController* NewController)

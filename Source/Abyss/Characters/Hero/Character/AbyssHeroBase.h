@@ -47,7 +47,6 @@ public:
 	
 	//~begin IAbyssCombatInterface
 	virtual UAbyssCombatComponentBase* GetCombatComponent()const override;
-	virtual void LevelUp(int32 NewLevel) override;
 	//~end IAbyssCombatInterface
 	
 	virtual void PossessedBy(AController* NewController) override;

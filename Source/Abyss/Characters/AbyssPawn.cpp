@@ -6,6 +6,8 @@
 #include "AbilitySystem/AbyssAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/AbyssAttributeSet.h"
 #include "Components/Combat/AbyssCombatComponent_Hero.h"
+#include "Components/Gameplay/AbyssInteractionComponent.h"
+#include "Components/Gameplay/AbyssInventoryComponent.h"
 #include "Data/AbyssDataRegistryManager.h"
 #include "Data/RegistryTypeDefine.h"
 #include "Data/DataTables/AbyssHeroClassInfoRow.h"
@@ -18,6 +20,12 @@ AAbyssPawn::AAbyssPawn()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	HeroCombatComponent = CreateDefaultSubobject<UAbyssCombatComponent_Hero>(TEXT("HeroCombatComponent"));
+	
+	InteractionComponent = CreateDefaultSubobject<UAbyssInteractionComponent>(TEXT("InteractionComponent"));
+	
+	InventoryComponent = CreateDefaultSubobject<UAbyssInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 // Called when the game starts or when spawned

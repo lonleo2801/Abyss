@@ -42,7 +42,6 @@ public:
 	virtual void Die(const FVector& DeathImpulse) override;
 	virtual bool IsDead() const override {return bDead;}
 	virtual FGameplayTag GetCharacterClass() const override {return CharacterTypeTag;}
-	virtual void LevelUp(int32 NewLevel)  override{}
 	//~end IAbyssCombatInterface
 
 	//~begin IAbilitySystemInterface

@@ -7,15 +7,18 @@
 #include "AttributeSet.h"
 #include "GameFramework/Pawn.h"
 #include "Interfaces/AbyssCombatInterface.h"
+#include "Interfaces/AbyssHeroInterface.h"
 #include "AbyssPawn.generated.h"
 
+class UAbyssInventoryComponent;
+class UAbyssInteractionComponent;
 class UAbyssCombatComponent_Hero;
 class UGameplayEffect;
 class UDebuffNiagaraComponent;
 class UNiagaraSystem;
 
 UCLASS()
-class ABYSS_API AAbyssPawn : public APawn , public IAbilitySystemInterface, public IAbyssCombatInterface
+class ABYSS_API AAbyssPawn : public APawn , public IAbilitySystemInterface, public IAbyssCombatInterface , public IAbyssHeroInterface
 {
 	GENERATED_BODY()
 
@@ -29,8 +32,11 @@ public:
 	virtual FOnASCRegistered GetOnAscRegisteredDelegate()const override;
 	virtual FOnDeathSignature GetOnDeathDelegate()const override;
 	virtual FGameplayTag GetCharacterClass() const override {return CharacterTypeTag;}
-	virtual void LevelUp(int32 NewLevel)  override{}
 	//~end IAbyssCombatInterface
+	
+	//~begin IAbyssHeroInterface
+	virtual void LevelUp(int32 NewLevel)  override{}
+	//~end IAbyssHeroInterface
 
 	//~begin IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -69,6 +75,12 @@ public:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Components",meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UAbyssCombatComponent_Hero> HeroCombatComponent;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Components",meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UAbyssInteractionComponent> InteractionComponent;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Components",meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UAbyssInventoryComponent> InventoryComponent;
 	
 	//~Begin 死亡相关
 

@@ -78,7 +78,7 @@ void UAbyssHUDLayout::HandleEscapeAction()
 {
 	if (ensure(!EscapeMenuClass.IsNull()))
 	{
-		UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(GetOwningLocalPlayer(), AbyssTags_UI::WidgetStack::GameMenu, EscapeMenuClass);
+		UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(GetOwningLocalPlayer(), AbyssTags_UI::Layer::GameMenu, EscapeMenuClass);
 	}
 }
 

@@ -15,6 +15,7 @@
 #include "GameFramework/Character.h"
 #include "GameplayTags/AbyssTags.h"
 #include "Interfaces/AbyssEnemyInterface.h"
+#include "Interfaces/AbyssHeroInterface.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/AbyssPlayerController.h"
 
@@ -290,7 +291,8 @@ void UAbyssAttributeSet::HandleIncomingXP(const FEffectProperties& EffectPropert
 	const float LocalIncomingXP = GetIncomingXP();
 	SetIncomingXP(0.f);
 	
-	if (IAbyssCombatInterface* CombatInterface = Cast<IAbyssCombatInterface>(EffectProperties.TargetCharacter))
+	if (IAbyssHeroInterface* HeroInterface = Cast<IAbyssHeroInterface>(EffectProperties.TargetCharacter);
+		IAbyssCombatInterface* CombatInterface = Cast<IAbyssCombatInterface>(EffectProperties.TargetCharacter))
 	{
 		int32 CurrentLevel = GetLevel();
 		const int32 CurrentXPValue = GetCurrentXP();
@@ -320,7 +322,7 @@ void UAbyssAttributeSet::HandleIncomingXP(const FEffectProperties& EffectPropert
 			UAbyssEffectLibrary::UpdateAllAttributeFromRegistry(EffectProperties.TargetASC,CombatInterface->GetCharacterClass(),NewLevel);
 			//更新等级
 			UAbyssEffectLibrary::ApplyAttributeChange(EffectProperties.TargetASC, AbyssTags::Attributes::Level, NewLevel, EGameplayModOp::Override);
-			CombatInterface->LevelUp(NewLevel);
+			HeroInterface->LevelUp(NewLevel);
 		}
 		//Update CurrentXP
 		UAbyssEffectLibrary::ApplyAttributeChange(EffectProperties.TargetASC, AbyssTags::Attributes::CurrentXP, TotalXP,EGameplayModOp::Override);

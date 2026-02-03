@@ -9,3 +9,4 @@ DECLARE_LOG_CATEGORY_EXTERN(LogAbyss, Log, All);
 
 #define ECC_Projectile ECollisionChannel::ECC_GameTraceChannel1
 #define ECC_CrosshairTrace ECollisionChannel::ECC_GameTraceChannel2
+#define ECC_Interaction ECollisionChannel::ECC_GameTraceChannel3
