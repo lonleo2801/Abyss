@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Leon Lee
-
 #pragma once
-
 
 #include "Actors/Weapons/WeaponDefinition.h"
 #include "Components/AbyssExtensionComponentBase.h"
 #include "CoreMinimal.h"
 #include "GameplayAbilitySpec.h"
 #include "AbyssInventoryComponent.generated.h"
+
+struct FInputActionValue;
 
 USTRUCT()
 struct FAbyssAbilitySetHandle {
@@ -140,4 +140,28 @@ protected:
   // GAS: 服务器端记录 Handle 的 Map (不需要复制，仅服务器权威管理)
   UPROPERTY()
   TMap<AAbyssWeaponBase *, FAbyssAbilitySetHandle> WeaponAbilityHandles;
+
+protected:
+  // Input
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input")
+  class UInputAction *PrimaryWeaponsAction;
+
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input")
+  class UInputAction *SecondaryWeaponsAction;
+
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input")
+  class UInputAction *MeleeWeaponsAction;
+
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input")
+  class UInputAction *PreviousWeaponAction;
+
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input")
+  class UInputAction *DropWeaponAction;
+
+  // Input Callbacks
+  void OnPrimaryWeaponsAction(const FInputActionValue &Value);
+  void OnSecondaryWeaponsAction(const FInputActionValue &Value);
+  void OnMeleeWeaponsAction(const FInputActionValue &Value);
+  void OnPreviousWeaponAction(const FInputActionValue &Value);
+  void OnDropWeaponAction(const FInputActionValue &Value);
 };

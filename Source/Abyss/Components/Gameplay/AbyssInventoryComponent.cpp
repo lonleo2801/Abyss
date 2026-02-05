@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 
 #include "Actors/Weapons/AbyssWeaponBase.h"
+#include "Components/Input/AbyssInputComponent.h"
 #include "Net/UnrealNetwork.h"
 
 UAbyssInventoryComponent::UAbyssInventoryComponent() {
@@ -23,7 +24,32 @@ void UAbyssInventoryComponent::GetLifetimeReplicatedProps(
   DOREPLIFETIME(UAbyssInventoryComponent, CurrentWeapon);
 }
 
-void UAbyssInventoryComponent::BeginPlay() { Super::BeginPlay(); }
+void UAbyssInventoryComponent::BeginPlay() {
+  Super::BeginPlay();
+
+  if (GetOwningPawn()->IsLocallyControlled() &&
+      GetOwningPawn()->InputComponent) {
+    if (UAbyssInputComponent *AbyssEnhancedInputComponent =
+            Cast<UAbyssInputComponent>(GetOwningPawn()->InputComponent)) {
+      // 绑定 "按下" (Started)
+      AbyssEnhancedInputComponent->BindAction(
+          PrimaryWeaponsAction, ETriggerEvent::Started, this,
+          &ThisClass::OnPrimaryWeaponsAction);
+      AbyssEnhancedInputComponent->BindAction(
+          SecondaryWeaponsAction, ETriggerEvent::Started, this,
+          &ThisClass::OnSecondaryWeaponsAction);
+      AbyssEnhancedInputComponent->BindAction(
+          MeleeWeaponsAction,ETriggerEvent::Started, this,
+          &ThisClass::OnMeleeWeaponsAction);
+      AbyssEnhancedInputComponent->BindAction(
+          PreviousWeaponAction, ETriggerEvent::Started, this,
+          &ThisClass::OnPreviousWeaponAction);
+      AbyssEnhancedInputComponent->BindAction(
+          DropWeaponAction,ETriggerEvent::Started, this,
+          &ThisClass::OnDropWeaponAction);
+    }
+  }
+}
 
 // ============================================================================
 // 拾取与自动装备逻辑 (Server Authority)
@@ -404,4 +430,29 @@ void UAbyssInventoryComponent::RemoveWeaponAbilities(AAbyssWeaponBase *Weapon) {
     }
     WeaponAbilityHandles.Remove(Weapon);
   }
+}
+
+void UAbyssInventoryComponent::OnPrimaryWeaponsAction(
+    const FInputActionValue &Value) {
+  ServerEquipWeapon(EWeaponSlot::Primary);
+}
+
+void UAbyssInventoryComponent::OnSecondaryWeaponsAction(
+    const FInputActionValue &Value) {
+  ServerEquipWeapon(EWeaponSlot::Secondary);
+}
+
+void UAbyssInventoryComponent::OnMeleeWeaponsAction(
+    const FInputActionValue &Value) {
+  ServerEquipWeapon(EWeaponSlot::Melee);
+}
+
+void UAbyssInventoryComponent::OnPreviousWeaponAction(
+    const FInputActionValue &Value) {
+  ServerSwapToPreviousWeapon();
+}
+
+void UAbyssInventoryComponent::OnDropWeaponAction(
+    const FInputActionValue &Value) {
+  ServerDropWeapon();
 }

@@ -45,7 +45,7 @@ protected:
 	UPROPERTY(EditAnywhere,Category="Abyss|Pickup")
 	TSubclassOf<UPickupPromptWidget> PickupWidget;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UPROPERTY(EditDefaultsOnly, Category = "Abyss|Input")
 	class UInputAction* InteractAction;
 	
 	// 输入回调函数
