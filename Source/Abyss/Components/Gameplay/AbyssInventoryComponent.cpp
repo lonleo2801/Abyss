@@ -22,6 +22,9 @@ void UAbyssInventoryComponent::GetLifetimeReplicatedProps(
   DOREPLIFETIME(UAbyssInventoryComponent, MeleeWeapon);
 
   DOREPLIFETIME(UAbyssInventoryComponent, CurrentWeapon);
+
+  DOREPLIFETIME(UAbyssInventoryComponent, RifleReserveAmmo);
+  DOREPLIFETIME(UAbyssInventoryComponent, PistolReserveAmmo);
 }
 
 void UAbyssInventoryComponent::BeginPlay() {
@@ -38,15 +41,15 @@ void UAbyssInventoryComponent::BeginPlay() {
       AbyssEnhancedInputComponent->BindAction(
           SecondaryWeaponsAction, ETriggerEvent::Started, this,
           &ThisClass::OnSecondaryWeaponsAction);
-      AbyssEnhancedInputComponent->BindAction(
-          MeleeWeaponsAction,ETriggerEvent::Started, this,
-          &ThisClass::OnMeleeWeaponsAction);
+      AbyssEnhancedInputComponent->BindAction(MeleeWeaponsAction,
+                                              ETriggerEvent::Started, this,
+                                              &ThisClass::OnMeleeWeaponsAction);
       AbyssEnhancedInputComponent->BindAction(
           PreviousWeaponAction, ETriggerEvent::Started, this,
           &ThisClass::OnPreviousWeaponAction);
-      AbyssEnhancedInputComponent->BindAction(
-          DropWeaponAction,ETriggerEvent::Started, this,
-          &ThisClass::OnDropWeaponAction);
+      AbyssEnhancedInputComponent->BindAction(DropWeaponAction,
+                                              ETriggerEvent::Started, this,
+                                              &ThisClass::OnDropWeaponAction);
     }
   }
 }
@@ -455,4 +458,59 @@ void UAbyssInventoryComponent::OnPreviousWeaponAction(
 void UAbyssInventoryComponent::OnDropWeaponAction(
     const FInputActionValue &Value) {
   ServerDropWeapon();
+}
+
+// ============================================================================
+// Ammo System
+// ============================================================================
+
+int32 UAbyssInventoryComponent::GetReserveAmmo(EAmmoType AmmoType) const {
+  if (AmmoType == EAmmoType::Rifle) {
+    return RifleReserveAmmo;
+  } else if (AmmoType == EAmmoType::Pistol) {
+    return PistolReserveAmmo;
+  }
+
+  return 0;
+}
+
+void UAbyssInventoryComponent::AddReserveAmmo(EAmmoType AmmoType,
+                                              int32 Amount) {
+  if (Amount <= 0) {
+    return;
+  }
+
+  if (AmmoType == EAmmoType::Rifle) {
+    RifleReserveAmmo = FMath::Clamp(RifleReserveAmmo + Amount, 0, 120);
+  } else if (AmmoType == EAmmoType::Pistol) {
+    PistolReserveAmmo = FMath::Clamp(PistolReserveAmmo + Amount, 0, 60);
+  }
+}
+
+bool UAbyssInventoryComponent::ConsumeReserveAmmo(EAmmoType AmmoType,
+                                                  int32 Amount) {
+  if (Amount <= 0) {
+    return false;
+  }
+
+  int32 Current = GetReserveAmmo(AmmoType);
+  if (Current >= Amount) {
+    if (AmmoType == EAmmoType::Rifle) {
+      RifleReserveAmmo = FMath::Clamp(RifleReserveAmmo - Amount, 0, 120);
+    } else if (AmmoType == EAmmoType::Pistol) {
+      PistolReserveAmmo = FMath::Clamp(PistolReserveAmmo - Amount, 0, 60);
+    }
+    return true;
+  }
+  return false;
+}
+
+EAmmoType UAbyssInventoryComponent::GetAmmoTypeForSlot(EWeaponSlot Slot) const {
+  if (Slot == EWeaponSlot::Primary) {
+    return EAmmoType::Rifle;
+  }
+  if (Slot == EWeaponSlot::Secondary) {
+    return EAmmoType::Pistol;
+  }
+  return EAmmoType::None;
 }

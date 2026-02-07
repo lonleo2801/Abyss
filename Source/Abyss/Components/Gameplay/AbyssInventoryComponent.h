@@ -164,4 +164,53 @@ protected:
   void OnMeleeWeaponsAction(const FInputActionValue &Value);
   void OnPreviousWeaponAction(const FInputActionValue &Value);
   void OnDropWeaponAction(const FInputActionValue &Value);
+
+public:
+  // --- Ammo System ---
+
+  /**
+   * Get the amount of reserve ammo for a specific type.
+   * @param AmmoType The type of ammo to check.
+   * @return The current reserve count.
+   */
+  UFUNCTION(BlueprintPure, Category = "Abyss|Ammo")
+  int32 GetReserveAmmo(EAmmoType AmmoType) const;
+
+  /**
+   * Add ammo to the reserve.
+   * @param AmmoType The type of ammo to add.
+   * @param Amount The amount to add.
+   */
+  UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Abyss|Ammo")
+  void AddReserveAmmo(EAmmoType AmmoType, int32 Amount);
+
+  /**
+   * Consume ammo from the reserve.
+   * @param AmmoType The type of ammo to use.
+   * @param Amount The amount to consume.
+   * @return True if successful (enough ammo existed).
+   */
+  UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Abyss|Ammo")
+  bool ConsumeReserveAmmo(EAmmoType AmmoType, int32 Amount);
+
+  /**
+   * Helper to determine ammo type from a weapon slot.
+   * @param Slot The weapon slot.
+   * @return The corresponding default ammo type.
+   */
+  UFUNCTION(BlueprintPure, Category = "Abyss|Ammo")
+  EAmmoType GetAmmoTypeForSlot(EWeaponSlot Slot) const;
+
+protected:
+  UPROPERTY(Replicated)
+  int32 RifleReserveAmmo = 60; // Default for testing
+  
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Ammo")
+  int32 MaxRifleReserveAmmo = 180;
+
+  UPROPERTY(Replicated)
+  int32 PistolReserveAmmo = 30; // Default for testing
+  
+  UPROPERTY(EditDefaultsOnly, Category = "Abyss|Ammo")
+  int32 MaxPistolReserveAmmo = 60;
 };
