@@ -1,9 +1,10 @@
 // Copyright (c) 2025 Leon Lee
 
 #pragma once
-#include "WeaponDefinition.h"
+
 #include "Actors/AbyssPickupActor.h"
 #include "CoreMinimal.h"
+#include "WeaponDefinition.h"
 #include "AbyssWeaponBase.generated.h"
 
 class UWeaponDefinition;
@@ -38,8 +39,18 @@ public:
   EWeaponState GetWeaponState() const { return CurrentState; }
 
   // --- Ammo System ---
-  UPROPERTY(Replicated, VisibleAnywhere,BlueprintReadOnly, Category = "Abyss|State")
+  DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnClipAmmoChanged, int32,
+                                              CurrentAmmo);
+  UPROPERTY(BlueprintAssignable)
+  FOnClipAmmoChanged OnClipAmmoChanged;
+
+  UPROPERTY(ReplicatedUsing = OnRep_CurrentAmmoInClip, VisibleAnywhere,
+            BlueprintReadOnly, Category = "Abyss|State")
   int32 CurrentAmmoInClip;
+
+  UFUNCTION()
+  void OnRep_CurrentAmmoInClip(int32 NewAmmo);
+
   /**
    * Get current ammo in clip.
    * @return Current ammo count.

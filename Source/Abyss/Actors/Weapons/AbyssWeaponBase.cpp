@@ -129,6 +129,12 @@ bool AAbyssWeaponBase::TriggerInteraction_Implementation(APawn *Interactor) {
 // Ammo System
 // ============================================================================
 
+void AAbyssWeaponBase::OnRep_CurrentAmmoInClip(int32 NewAmmo) {
+  if (OnClipAmmoChanged.IsBound()) {
+    OnClipAmmoChanged.Broadcast(CurrentAmmoInClip);
+  }
+}
+
 int32 AAbyssWeaponBase::GetMaxClipSize() const {
   if (WeaponDef) {
     return WeaponDef->DefaultClipSize;
@@ -141,7 +147,14 @@ void AAbyssWeaponBase::ConsumeAmmo(int32 Amount) {
     return;
   }
 
-  CurrentAmmoInClip = FMath::Max(0, CurrentAmmoInClip - Amount);
+  // Ensure we are on server
+  if (HasAuthority()) {
+    CurrentAmmoInClip = FMath::Max(0, CurrentAmmoInClip - Amount);
+
+    // 服务器修改 Replicated 变量后不会自动触发自己的 OnRep
+    // 需要手动调用以触发本地广播
+    OnRep_CurrentAmmoInClip(CurrentAmmoInClip);
+  }
 }
 
 void AAbyssWeaponBase::AddAmmo(int32 Amount) {
@@ -149,7 +162,15 @@ void AAbyssWeaponBase::AddAmmo(int32 Amount) {
     return;
   }
 
-  CurrentAmmoInClip = FMath::Min(GetMaxClipSize(), CurrentAmmoInClip + Amount);
+  if (HasAuthority()) {
+    CurrentAmmoInClip =
+        FMath::Min(GetMaxClipSize(), CurrentAmmoInClip + Amount);
+
+    // 服务器修改 Replicated 变量后不会自动触发自己的 OnRep
+    // 需要手动调用以触发本地广播
+    OnRep_CurrentAmmoInClip(CurrentAmmoInClip);
+    
+  }
 }
 
 EAmmoType AAbyssWeaponBase::GetAmmoType() const {

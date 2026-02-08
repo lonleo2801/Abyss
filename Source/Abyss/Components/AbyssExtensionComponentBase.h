@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/AbyssCharacterBase.h"
+#include "Characters/AbyssPawn.h"
 #include "Components/ActorComponent.h"
 #include "AbyssExtensionComponentBase.generated.h"
 
@@ -45,11 +46,11 @@ protected:
 	
 	virtual UAbilitySystemComponent* GetOwningAbilitySystemComponent() const
 	{
-		return nullptr;
+		return GetOwningPawn<AAbyssPawn>()->GetAbilitySystemComponent();
 	}
 	
 	virtual UAttributeSet* GetOwningAttributeSet() const
 	{
-		return nullptr;
+		return GetOwningPawn<AAbyssPawn>()->GetAttributeSet();
 	}
 };

@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Leon Lee
 #pragma once
 
+
 #include "Actors/Weapons/WeaponDefinition.h"
 #include "Components/AbyssExtensionComponentBase.h"
 #include "CoreMinimal.h"
@@ -18,9 +19,6 @@ struct FAbyssAbilitySetHandle {
   TArray<FGameplayAbilitySpecHandle> Handles;
 };
 class AAbyssWeaponBase;
-// 委托：当当前武器发生变化时（通知 HUD 更新弹药/准星）
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChanged,
-                                            AAbyssWeaponBase *, NewWeapon);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class ABYSS_API UAbyssInventoryComponent : public UAbyssExtensionComponentBase {
@@ -88,9 +86,14 @@ public:
   // 丢弃指定武器
   void DropSpecificWeapon(AAbyssWeaponBase *Weapon);
 
-  // --- 委托 ---
+  // --- 委托 --- 当当前武器发生变化时（通知 HUD 更新弹药/准星）
+  DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdated);
   UPROPERTY(BlueprintAssignable)
-  FOnCurrentWeaponChanged OnCurrentWeaponChanged;
+  FOnInventoryUpdated OnInventoryUpdated;
+
+  DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAmmoChanged);
+  UPROPERTY(BlueprintAssignable)
+  FOnAmmoChanged OnAmmoChanged;
 
 protected:
   virtual void BeginPlay() override;
@@ -100,22 +103,22 @@ protected:
   // --- 核心数据 (Replicated) ---
 
   // 长枪槽位 (最多2把)
-  UPROPERTY(Replicated)
+  UPROPERTY(ReplicatedUsing = OnRep_Inventory)
   TArray<AAbyssWeaponBase *> PrimaryWeapons;
 
   // 手枪槽位 (最多2把)
-  UPROPERTY(Replicated)
+  UPROPERTY(ReplicatedUsing = OnRep_Inventory)
   TArray<AAbyssWeaponBase *> SecondaryWeapons;
 
   // 近战槽位 (仅1把)
-  UPROPERTY(Replicated)
+  UPROPERTY(ReplicatedUsing = OnRep_Inventory)
   AAbyssWeaponBase *MeleeWeapon;
 
   // 每个槽位上次使用的武器索引 (用于替换逻辑)
-  UPROPERTY()
+  UPROPERTY(Replicated)
   int32 LastUsedPrimaryIndex = 0;
 
-  UPROPERTY()
+  UPROPERTY(Replicated)
   int32 LastUsedSecondaryIndex = 0;
 
   // 当前手持的武器
@@ -127,9 +130,14 @@ protected:
   AAbyssWeaponBase *PreviousWeapon;
 
   // --- 内部逻辑 ---
+  UFUNCTION()
+  void OnRep_Inventory();
 
   UFUNCTION()
   void OnRep_CurrentWeapon(AAbyssWeaponBase *OldWeapon);
+
+  UFUNCTION()
+  void OnCurrentWeaponAmmoUpdate(int32 NewAmmo);
 
   // GAS: 赋予武器技能
   void GrantWeaponAbilities(AAbyssWeaponBase *Weapon);
@@ -202,15 +210,21 @@ public:
   EAmmoType GetAmmoTypeForSlot(EWeaponSlot Slot) const;
 
 protected:
-  UPROPERTY(Replicated)
+  UPROPERTY(ReplicatedUsing = OnRep_RifleReserveAmmo)
   int32 RifleReserveAmmo = 60; // Default for testing
-  
+
   UPROPERTY(EditDefaultsOnly, Category = "Abyss|Ammo")
   int32 MaxRifleReserveAmmo = 180;
 
-  UPROPERTY(Replicated)
+  UPROPERTY(ReplicatedUsing = OnRep_PistolReserveAmmo)
   int32 PistolReserveAmmo = 30; // Default for testing
-  
+
   UPROPERTY(EditDefaultsOnly, Category = "Abyss|Ammo")
   int32 MaxPistolReserveAmmo = 60;
+
+  UFUNCTION()
+  void OnRep_RifleReserveAmmo();
+
+  UFUNCTION()
+  void OnRep_PistolReserveAmmo();
 };

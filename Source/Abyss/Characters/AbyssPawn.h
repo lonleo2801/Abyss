@@ -42,6 +42,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~end IAbilitySystemInterface
 	
+	UAbyssInventoryComponent* GetInventoryComponent() const { return InventoryComponent;};
+	
 	UAttributeSet* GetAttributeSet() const;
 	
 	void InitializeDefaultAttributes() const;

@@ -96,6 +96,12 @@ namespace AbyssTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "AbyssTags.Ability.Enemy.HitReact","")
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attack, "AbyssTags.Ability.Enemy.Attack", "Tag for the Attack Ability")
 		}
+
+		namespace Weapon
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reload, "AbyssTags.Ability.Weapon.Reload", "Tag for Weapon Reload")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "AbyssTags.Ability.Weapon.Fire", "Tag for Weapon Fire")
+		}
 	}
 	
 	namespace Cooldown

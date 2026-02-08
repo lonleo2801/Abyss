@@ -22,7 +22,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FEffectAssetTags EffectAssetTags;
 
-	void AddCharacterStartupAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Abyss|Abilities")
+	FGameplayAbilitySpecHandle AddCharacterAbility(TSubclassOf<UGameplayAbility> AbilityClass, int32 Level = 1);
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
 
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);

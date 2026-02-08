@@ -14,14 +14,53 @@ void UAbyssAbilitySystemComponent::AbilityActorInfoSet()
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&ThisClass::ClientEffectApplied);
 }
 
-void UAbyssAbilitySystemComponent::AddCharacterStartupAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+FGameplayAbilitySpecHandle UAbyssAbilitySystemComponent::AddCharacterAbility(TSubclassOf<UGameplayAbility> AbilityClass,int32 Level)
 {
+	// 1. 安全检查：必须是服务器，且类有效
+	if (!IsOwnerActorAuthoritative())
+	{
+		return FGameplayAbilitySpecHandle(); // 返回一个无效的空 Handle
+	}
+
+	if (!AbilityClass)
+	{
+		return FGameplayAbilitySpecHandle();
+	}
+
+	// 2. 构建 Spec
+	FGameplayAbilitySpec AbilitySpec(AbilityClass, Level);
+
+	// 3. 处理 Input Tag (从 CDO 读取配置)
+	if (const UAbyssGameplayAbility* AbyssAbility = Cast<UAbyssGameplayAbility>(AbilitySpec.Ability))
+	{
+		if (AbyssAbility->StartupInputTag.IsValid())
+		{
+			// 将 Input Tag 添加到 Spec 的动态标签中
+			AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbyssAbility->StartupInputTag);
+		}
+	}
+
+	// 4. 赋予技能并返回 Handle
+	// GiveAbility 会在内部处理 Spec 的注册并返回生成的 Handle
+	return GiveAbility(AbilitySpec);
+}
+
+void UAbyssAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+{
+	if (!IsOwnerActorAuthoritative())
+	{
+		return;
+	}
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
+		if (!AbilityClass) continue;
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
 		if (const UAbyssGameplayAbility* AbyssAbility = Cast<UAbyssGameplayAbility>(AbilitySpec.Ability))
 		{
-			AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbyssAbility->StartupInputTag);
+			if (AbyssAbility->StartupInputTag.IsValid())
+			{
+				AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbyssAbility->StartupInputTag);
+			}
 			GiveAbility(AbilitySpec);
 		}
 	}

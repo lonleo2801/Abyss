@@ -109,7 +109,7 @@ void AAbyssHeroBase::AddCharacterStartupAbilities() const
 				StartupAbilities.Add(AbilityInfo->Ability);
 			}
 		}
-		AbyssASC->AddCharacterStartupAbilities(StartupAbilities);
+		AbyssASC->AddCharacterAbilities(StartupAbilities);
 	}
 }
 

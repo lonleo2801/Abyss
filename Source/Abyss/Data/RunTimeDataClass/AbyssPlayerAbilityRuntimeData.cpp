@@ -70,7 +70,7 @@ void UAbyssPlayerAbilityRuntimeData::Initialize(const AAbyssPawn* HeroCharacter,
 			}
 		}
 		//初始化startup技能
-		AbyssASC->AddCharacterStartupAbilities(StartupAbilities);
+		AbyssASC->AddCharacterAbilities(StartupAbilities);
 	}
 }
 

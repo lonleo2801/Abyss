@@ -3,6 +3,7 @@
 *.iws
 *.iml
 .lingma/
+.GEMINI.md
 # ========== Visual Studio ==========
 .vs/
 *.sln

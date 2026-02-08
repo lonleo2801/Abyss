@@ -228,7 +228,7 @@ void UAbyssAttributeSet::HandleIncomingDamage(const FEffectProperties& EffectPro
 		const bool bBlock = UAbyssEffectLibrary::IsBlockedHit(EffectProperties.EffectContextHandle);
 		const bool bCrit = UAbyssEffectLibrary::IsCriticalHit(EffectProperties.EffectContextHandle);
 		//TODO: 改为用Niagara来显示伤害数字
-		ShowFloatingText(EffectProperties,LocalIncomingDamage,bBlock,bCrit);
+		//(EffectProperties,LocalIncomingDamage,bBlock,bCrit);
 		
 		//Handle Debuff
 		if (UAbyssEffectLibrary::IsSuccessfulDebuff(EffectProperties.EffectContextHandle))

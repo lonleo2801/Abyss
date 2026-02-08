@@ -18,7 +18,7 @@ public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Abyss|Projectile")
-	void SpawnProjectile(FVector ProjectileTargetLocation = FVector::ZeroVector,FGameplayTag SocketTag = FGameplayTag(),bool bOverridePitch=false,float PitchOverride = 0.f);
+	virtual void SpawnProjectile(FVector ProjectileTargetLocation = FVector::ZeroVector,FGameplayTag SocketTag = FGameplayTag(),bool bOverridePitch=false,float PitchOverride = 0.f);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AAbyssProjectile> ProjectileClass;

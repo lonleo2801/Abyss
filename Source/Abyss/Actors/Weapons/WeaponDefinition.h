@@ -9,6 +9,7 @@
 
 class UCurveVector;
 class UGameplayEffect;
+class UAnimMontage;
 class UGameplayAbility;
 
 UENUM(BlueprintType)
@@ -105,6 +106,10 @@ public:
   // 武器自身的动画蓝图 (用于处理滑套后坐力、弹夹掉落)
   UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
   TSubclassOf<UAnimInstance> WeaponAnimBP;
+
+  // 装填蒙太奇 (角色播放)
+  UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
+  UAnimMontage *ReloadMontage;
 
   // ========================================================================
   // 5. 弹道与后坐力 (Ballistics - 可选，如果不放在 GE 里)

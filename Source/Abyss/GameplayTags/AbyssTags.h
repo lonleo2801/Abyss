@@ -98,6 +98,11 @@ namespace AbyssTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack);
 		}
+		namespace Weapon
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Reload);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire);
+		}
 	}
 	
 	/**

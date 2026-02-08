@@ -2,6 +2,7 @@
 
 #include "AbyssInventoryComponent.h"
 
+#include "AbilitySystem/AbyssAbilitySystemComponent.h"
 #include "AbilitySystemComponent.h"
 
 #include "Actors/Weapons/AbyssWeaponBase.h"
@@ -261,7 +262,7 @@ void UAbyssInventoryComponent::DropSpecificWeapon(
     CurrentWeapon = nullptr;
 
     // Server Context Update
-    OnCurrentWeaponChanged.Broadcast(nullptr);
+    OnInventoryUpdated.Broadcast();
 
     // 丢弃后不自动切换
   } else {
@@ -376,27 +377,41 @@ UAbyssInventoryComponent::GetWeaponInSlot(EWeaponSlot Slot) const {
 
 void UAbyssInventoryComponent::OnRep_CurrentWeapon(
     AAbyssWeaponBase *OldWeapon) {
-  // 注意：AWeaponBase::OnRep_State 已经处理了 Attach Mesh 到 Socket 的逻辑
-  // 这里主要处理 "角色" 层面的逻辑，比如 UI 更新、动画状态机变量设置
 
-  // TODO:  广播给 HUD
-  OnCurrentWeaponChanged.Broadcast(CurrentWeapon);
-
-  // 如果你有动画层 (AnimInstance)，这里是更新 "IsRifle?", "IsPistol?"
-  // 变量的好地方
-  if (ACharacter *Character = Cast<ACharacter>(GetOwner())) {
-    // 示例：更新 AnimInstance
-    // UMyAnimInstance* AnimInst =
-    // Cast<UMyAnimInstance>(Character->GetMesh()->GetAnimInstance()); if
-    // (AnimInst) AnimInst->SetCurrentWeapon(CurrentWeapon);
+  // 1. Unbind from old weapon's ammo delegate
+  if (OldWeapon) {
+    if (OldWeapon->OnClipAmmoChanged.IsAlreadyBound(
+            this, &ThisClass::OnCurrentWeaponAmmoUpdate)) {
+      OldWeapon->OnClipAmmoChanged.RemoveDynamic(
+          this, &ThisClass::OnCurrentWeaponAmmoUpdate);
+    }
   }
+
+  // 2. Bind to new weapon's ammo delegate
+  if (CurrentWeapon) {
+    if (!CurrentWeapon->OnClipAmmoChanged.IsAlreadyBound(
+            this, &ThisClass::OnCurrentWeaponAmmoUpdate)) {
+      CurrentWeapon->OnClipAmmoChanged.AddDynamic(
+          this, &ThisClass::OnCurrentWeaponAmmoUpdate);
+    }
+  }
+
+  // 3. Broadcast change
+  OnInventoryUpdated.Broadcast();
+  OnAmmoChanged.Broadcast();
+}
+
+void UAbyssInventoryComponent::OnCurrentWeaponAmmoUpdate(int32 NewAmmo) {
+  // Broadcast clip ammo change to HUD
+  OnAmmoChanged.Broadcast();
 }
 
 void UAbyssInventoryComponent::GrantWeaponAbilities(AAbyssWeaponBase *Weapon) {
   if (!Weapon || !Weapon->WeaponDef || !GetOwner())
     return;
 
-  UAbilitySystemComponent *ASC = GetOwningAbilitySystemComponent();
+  UAbyssAbilitySystemComponent *ASC =
+      Cast<UAbyssAbilitySystemComponent>(GetOwningAbilitySystemComponent());
   if (!ASC)
     return;
 
@@ -410,8 +425,8 @@ void UAbyssInventoryComponent::GrantWeaponAbilities(AAbyssWeaponBase *Weapon) {
   for (const TSubclassOf<UGameplayAbility> &AbilityClass :
        Weapon->WeaponDef->AbilitiesToGrant) {
     if (AbilityClass) {
-      FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, Weapon);
-      FGameplayAbilitySpecHandle Handle = ASC->GiveAbility(Spec);
+      FGameplayAbilitySpecHandle Handle =
+          ASC->AddCharacterAbility(AbilityClass);
       HandleSet.Handles.Add(Handle);
     }
   }
@@ -480,10 +495,19 @@ void UAbyssInventoryComponent::AddReserveAmmo(EAmmoType AmmoType,
     return;
   }
 
+  int32 NewAmount = 0;
   if (AmmoType == EAmmoType::Rifle) {
-    RifleReserveAmmo = FMath::Clamp(RifleReserveAmmo + Amount, 0, 120);
+    RifleReserveAmmo =
+        FMath::Clamp(RifleReserveAmmo + Amount, 0, MaxRifleReserveAmmo);
+    NewAmount = RifleReserveAmmo;
   } else if (AmmoType == EAmmoType::Pistol) {
-    PistolReserveAmmo = FMath::Clamp(PistolReserveAmmo + Amount, 0, 60);
+    PistolReserveAmmo =
+        FMath::Clamp(PistolReserveAmmo + Amount, 0, MaxPistolReserveAmmo);
+    NewAmount = PistolReserveAmmo;
+  }
+
+  if (GetOwner() && GetOwner()->HasAuthority()) {
+    OnAmmoChanged.Broadcast();
   }
 }
 
@@ -495,10 +519,19 @@ bool UAbyssInventoryComponent::ConsumeReserveAmmo(EAmmoType AmmoType,
 
   int32 Current = GetReserveAmmo(AmmoType);
   if (Current >= Amount) {
+    int32 NewAmount = 0;
     if (AmmoType == EAmmoType::Rifle) {
-      RifleReserveAmmo = FMath::Clamp(RifleReserveAmmo - Amount, 0, 120);
+      RifleReserveAmmo =
+          FMath::Clamp(RifleReserveAmmo - Amount, 0, MaxRifleReserveAmmo);
+      NewAmount = RifleReserveAmmo;
     } else if (AmmoType == EAmmoType::Pistol) {
-      PistolReserveAmmo = FMath::Clamp(PistolReserveAmmo - Amount, 0, 60);
+      PistolReserveAmmo =
+          FMath::Clamp(PistolReserveAmmo - Amount, 0, MaxPistolReserveAmmo);
+      NewAmount = PistolReserveAmmo;
+    }
+
+    if (GetOwner() && GetOwner()->HasAuthority()) {
+      OnAmmoChanged.Broadcast();
     }
     return true;
   }
@@ -513,4 +546,16 @@ EAmmoType UAbyssInventoryComponent::GetAmmoTypeForSlot(EWeaponSlot Slot) const {
     return EAmmoType::Pistol;
   }
   return EAmmoType::None;
+}
+
+void UAbyssInventoryComponent::OnRep_Inventory() {
+  OnInventoryUpdated.Broadcast();
+}
+
+void UAbyssInventoryComponent::OnRep_RifleReserveAmmo() {
+  OnAmmoChanged.Broadcast();
+}
+
+void UAbyssInventoryComponent::OnRep_PistolReserveAmmo() {
+  OnAmmoChanged.Broadcast();
 }
